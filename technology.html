@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology - VirtuFit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: #000;
+            color: #f5f5f7;
+            overflow-x: hidden;
+        }
+
+        /* Navigation - Same as about.html */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 22px;
+            height: 44px;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .logo a {
+            color: #f5f5f7;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 12px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 22px;
+            height: 2px;
+            background: #f5f5f7;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mobile-menu li {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-menu a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 17px;
+            display: block;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 20px 80px;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 80px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 28px;
+            color: #a8a8ad;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Tech Grid */
+        .tech-section {
+            padding: 80px 20px;
+        }
+
+        .tech-section.dark {
+            background: #0a0a0a;
+        }
+
+        .tech-intro {
+            max-width: 800px;
+            margin: 0 auto 80px;
+            text-align: center;
+        }
+
+        .tech-intro h2 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .tech-intro p {
+            font-size: 24px;
+            color: #a8a8ad;
+            line-height: 1.6;
+        }
+
+        .tech-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .tech-card {
+            background: linear-gradient(135deg, rgba(88, 86, 214, 0.05) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 60px;
+            transition: all 0.3s;
+        }
+
+        .tech-card:hover {
+            background: linear-gradient(135deg, rgba(88, 86, 214, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border-color: rgba(88, 86, 214, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .tech-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .tech-card h3 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .tech-card p {
+            font-size: 19px;
+            color: #a8a8ad;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .tech-features {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .tech-features li {
+            font-size: 17px;
+            color: #a8a8ad;
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .tech-features li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #5856d6;
+        }
+
+        /* Process Section */
+        .process-section {
+            padding: 80px 20px;
+            background: #0a0a0a;
+        }
+
+        .process-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .process-wrapper h2 {
+            font-size: 56px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .process-steps {
+            display: grid;
+            gap: 40px;
+        }
+
+        .process-step {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .step-number {
+            font-size: 80px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #5856d6 0%, #9f7aea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .step-content h3 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .step-content p {
+            font-size: 19px;
+            color: #a8a8ad;
+            line-height: 1.6;
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #5856d6 0%, #9f7aea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cta-section p {
+            font-size: 24px;
+            color: #a8a8ad;
+            margin-bottom: 40px;
+        }
+
+        .cta-primary {
+            background: #0071e3;
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 980px;
+            text-decoration: none;
+            font-size: 19px;
+            transition: background 0.3s;
+            display: inline-block;
+        }
+
+        .cta-primary:hover {
+            background: #0077ed;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer p {
+            font-size: 12px;
+            color: #6e6e73;
+        }
+
+        /* Responsive */
+        @media (max-width: 1068px) {
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .process-step {
+                grid-template-columns: 80px 1fr;
+                gap: 30px;
+            }
+            
+            .step-number {
+                font-size: 64px;
+            }
+        }
+
+        @media (max-width: 734px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            
+            .hero {
+                padding: 100px 24px 60px;
+            }
+            
+            .hero h1 {
+                font-size: 48px;
+            }
+            
+            .hero p {
+                font-size: 21px;
+            }
+            
+            .tech-section {
+                padding: 60px 24px;
+            }
+            
+            .tech-intro h2 {
+                font-size: 40px;
+            }
+            
+            .tech-intro p {
+                font-size: 19px;
+            }
+            
+            .tech-card {
+                padding: 32px;
+            }
+            
+            .tech-card h3 {
+                font-size: 24px;
+            }
+            
+            .tech-card p {
+                font-size: 17px;
+            }
+            
+            .process-section {
+                padding: 60px 24px;
+            }
+            
+            .process-wrapper h2 {
+                font-size: 40px;
+            }
+            
+            .process-step {
+                grid-template-columns: 60px 1fr;
+                gap: 20px;
+            }
+            
+            .step-number {
+                font-size: 48px;
+            }
+            
+            .step-content h3 {
+                font-size: 24px;
+            }
+            
+            .step-content p {
+                font-size: 17px;
+            }
+            
+            .cta-section {
+                padding: 80px 24px;
+            }
+            
+            .cta-section h2 {
+                font-size: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .tech-intro h2,
+            .process-wrapper h2,
+            .cta-section h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="nav">
+        <div class="nav-content">
+            <div class="logo"><a href="index.html">VirtuFit</a></div>
+            <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="technology.html" style="opacity: 1;">Technology</a></li>
+                <li><a href="retailers.html">For Retailers</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="technology.html">Technology</a></li>
+            <li><a href="retailers.html">For Retailers</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Technology that feels like magic.</h1>
+        <p>Built on breakthroughs in AI, computer vision, and real-time graphics.</p>
+    </section>
+
+    <!-- Core Technologies -->
+    <section class="tech-section">
+        <div class="tech-intro">
+            <h2>The foundation.</h2>
+            <p>We're combining cutting-edge research from multiple fields to create something entirely new.</p>
+        </div>
+        
+        <div class="tech-grid">
+            <div class="tech-card">
+                <span class="tech-icon">👁️</span>
+                <h3>Computer Vision</h3>
+                <p>Our body scanning system will use depth sensors and machine learning to capture precise measurements in real-time.</p>
+                <ul class="tech-features">
+                    <li>Sub-centimeter measurement accuracy</li>
+                    <li>3D body mesh generation</li>
+                    <li>Facial recognition for instant accounts</li>
+                    <li>Skin tone and complexion analysis</li>
+                </ul>
+            </div>
+            
+            <div class="tech-card">
+                <span class="tech-icon">⚡</span>
+                <h3>Physics Simulation</h3>
+                <p>Proprietary cloth simulation engine that models real fabric behavior with unprecedented accuracy.</p>
+                <ul class="tech-features">
+                    <li>Real-time collision detection</li>
+                    <li>Material-specific draping physics</li>
+                    <li>60fps+ performance target</li>
+                    <li>Multi-layer garment support</li>
+                </ul>
+            </div>
+            
+            <div class="tech-card">
+                <span class="tech-icon">🧠</span>
+                <h3>Neural Networks</h3>
+                <p>AI models trained on diverse body types and clothing behaviors to ensure accuracy for everyone.</p>
+                <ul class="tech-features">
+                    <li>Body shape prediction</li>
+                    <li>Skin texture generation</li>
+                    <li>Size recommendation engine</li>
+                    <li>Style personalization</li>
+                </ul>
+            </div>
+            
+            <div class="tech-card">
+                <span class="tech-icon">🎨</span>
+                <h3>Real-Time Rendering</h3>
+                <p>Photorealistic graphics pipeline optimized for consumer hardware and mobile devices.</p>
+                <ul class="tech-features">
+                    <li>Ray-traced lighting and shadows</li>
+                    <li>Advanced material shaders</li>
+                    <li>Seamless skin blending</li>
+                    <li>Cross-platform optimization</li>
+                </ul>
+            </div>
+            
+            <div class="tech-card">
+                <span class="tech-icon">🤖</span>
+                <h3>3D Asset Generation</h3>
+                <p>Automated pipeline to convert 2D product images into optimized 3D models with physics properties.</p>
+                <ul class="tech-features">
+                    <li>Single-image to 3D conversion</li>
+                    <li>Automatic UV mapping</li>
+                    <li>Material property inference</li>
+                    <li>Quality assurance validation</li>
+                </ul>
+            </div>
+            
+            <div class="tech-card">
+                <span class="tech-icon">📊</span>
+                <h3>Analytics Engine</h3>
+                <p>Deep insights into customer behavior, preferences, and conversion patterns.</p>
+                <ul class="tech-features">
+                    <li>Try-on heatmaps</li>
+                    <li>Size distribution analysis</li>
+                    <li>Conversion tracking</li>
+                    <li>Inventory optimization</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="process-section">
+        <div class="process-wrapper">
+            <h2>How it will work.</h2>
+            
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Body Scan</h3>
+                        <p>Customer stands in front of the smart mirror. Depth sensors and cameras capture full body measurements, create a 3D mesh, and analyze complexion. Facial recognition creates or retrieves their account automatically. Total time: 3 seconds.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Garment Selection</h3>
+                        <p>Customer browses the available catalog through touch interface or voice. They select an item they want to try. Our AI recommends their ideal size based on body measurements and historical data.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Virtual Try-On</h3>
+                        <p>The system renders the selected garment on their body in real-time. Physics simulation ensures realistic movement and draping. If the garment exposes skin not visible in their current clothing, our AI generates matching skin texture seamlessly.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Size Comparison</h3>
+                        <p>Customer can instantly switch between sizes (S, M, L, XL) or view multiple sizes side-by-side. They can rotate, zoom, and examine from every angle. The system highlights fit differences to help them decide.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Decision & Purchase</h3>
+                        <p>Customer selects their preferred size and either adds to cart (for online) or locates the item in-store. Analytics capture the entire journey for retailer insights.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Want to learn more?</h2>
+        <p>We're happy to discuss the technical details in depth.</p>
+        <a href="contact.html" class="cta-primary">Contact us</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 VirtuFit. All rights reserved.</p>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            const isClickOnHamburger = hamburger.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnHamburger && mobileMenu.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

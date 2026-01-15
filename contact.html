@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - VirtuFit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: #000;
+            color: #f5f5f7;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 22px;
+            height: 44px;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .logo a {
+            color: #f5f5f7;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 12px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 22px;
+            height: 2px;
+            background: #f5f5f7;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mobile-menu li {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-menu a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 17px;
+            display: block;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 20px 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 80px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 28px;
+            color: #a8a8ad;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Contact Content */
+        .contact-section {
+            padding: 60px 20px 100px;
+        }
+
+        .contact-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        /* Form */
+        .contact-form {
+            background: #0a0a0a;
+            padding: 50px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-form h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #a8a8ad;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #f5f5f7;
+            font-size: 17px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #5856d6;
+            background: rgba(88, 86, 214, 0.05);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-button {
+            background: #0071e3;
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 980px;
+            border: none;
+            font-size: 17px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            background: #0077ed;
+        }
+
+        /* Contact Info */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, rgba(88, 86, 214, 0.05) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 40px;
+        }
+
+        .info-card h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .info-card p {
+            font-size: 17px;
+            color: #a8a8ad;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-icon {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(88, 86, 214, 0.1);
+            border-radius: 10px;
+        }
+
+        .info-item a {
+            color: #2997ff;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .info-item a:hover {
+            text-decoration: underline;
+        }
+
+        .interest-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .interest-button {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .interest-button:hover {
+            background: rgba(88, 86, 214, 0.1);
+            border-color: rgba(88, 86, 214, 0.3);
+        }
+
+        .interest-button-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .interest-button-text {
+            font-size: 15px;
+            color: #a8a8ad;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer p {
+            font-size: 12px;
+            color: #6e6e73;
+        }
+
+        /* Responsive */
+        @media (max-width: 1068px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 734px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            
+            .hero {
+                padding: 100px 24px 40px;
+            }
+            
+            .hero h1 {
+                font-size: 48px;
+            }
+            
+            .hero p {
+                font-size: 21px;
+            }
+            
+            .contact-section {
+                padding: 40px 24px 80px;
+            }
+            
+            .contact-form {
+                padding: 32px 24px;
+            }
+            
+            .contact-form h2 {
+                font-size: 28px;
+            }
+            
+            .info-card {
+                padding: 32px;
+            }
+            
+            .interest-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="nav">
+        <div class="nav-content">
+            <div class="logo"><a href="index.html">VirtuFit</a></div>
+            <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="technology.html">Technology</a></li>
+                <li><a href="retailers.html">For Retailers</a></li>
+                <li><a href="contact.html" style="opacity: 1;">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="technology.html">Technology</a></li>
+            <li><a href="retailers.html">For Retailers</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Let's talk.</h1>
+        <p>We're looking for partners, investors, and early adopters.</p>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-container">
+            <!-- Contact Form -->
+            <div class="contact-form">
+                <h2>Send us a message</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">Company / Organization</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interest">I'm interested in...</label>
+                        <select id="interest" name="interest" required>
+                            <option value="">Select an option</option>
+                            <option value="investor">Investment Opportunities</option>
+                            <option value="retail-partner">Retail Partnership</option>
+                            <option value="technology">Technology Partnership</option>
+                            <option value="early-access">Early Access / Beta Program</option>
+                            <option value="press">Press / Media Inquiry</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">Send Message</button>
+                </form>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="contact-info">
+                <div class="info-card">
+                    <h3>Get in touch</h3>
+                    <p>We'd love to hear from you. Whether you're a potential investor, retail partner, or just curious about our technology.</p>
+                    
+                    <div class="info-item">
+                        <span class="info-icon">📧</span>
+                        <a href="mailto:hello@virtufit.com">hello@virtufit.com</a>
+                    </div>
+                    
+                    <div class="info-item">
+                        <span class="info-icon">💼</span>
+                        <a href="mailto:investors@virtufit.com">investors@virtufit.com</a>
+                    </div>
+                    
+                    <div class="info-item">
+                        <span class="info-icon">🏢</span>
+                        <a href="mailto:partners@virtufit.com">partners@virtufit.com</a>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>What we're looking for</h3>
+                    
+                    <div class="interest-buttons">
+                        <div class="interest-button">
+                            <span class="interest-button-icon">💰</span>
+                            <span class="interest-button-text">Seed Investors</span>
+                        </div>
+                        
+                        <div class="interest-button">
+                            <span class="interest-button-icon">🏪</span>
+                            <span class="interest-button-text">Retail Partners</span>
+                        </div>
+                        
+                        <div class="interest-button">
+                            <span class="interest-button-icon">🔬</span>
+                            <span class="interest-button-text">Tech Partners</span>
+                        </div>
+                        
+                        <div class="interest-button">
+                            <span class="interest-button-icon">🎯</span>
+                            <span class="interest-button-text">Early Adopters</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Timeline</h3>
+                    <p>We're currently in the concept and development phase. Our goal is to have a working prototype by Q4 2026 and begin pilot programs with select retail partners by early 2027.</p>
+                    <p style="margin-bottom: 0;">Early partners will have input on features and priority access to the technology.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 VirtuFit. All rights reserved.</p>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            const isClickOnHamburger = hamburger.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnHamburger && mobileMenu.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // In a real implementation, you would send this to a backend
+            console.log('Form submitted:', data);
+            
+            // Show success message
+            alert('Thank you for your message! We\'ll get back to you soon.');
+            
+            // Reset form
+            this.reset();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - VirtuFit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: #000;
+            color: #f5f5f7;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .nav-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 22px;
+            height: 44px;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .logo a {
+            color: #f5f5f7;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 22px;
+            height: 2px;
+            background: #f5f5f7;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mobile-menu li {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-menu a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 17px;
+            display: block;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 20px 80px;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 80px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 28px;
+            color: #a8a8ad;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 80px 20px;
+        }
+
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-section h2 {
+            font-size: 56px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            line-height: 1.1;
+            margin-bottom: 30px;
+        }
+
+        .content-section p {
+            font-size: 24px;
+            color: #a8a8ad;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .content-section.dark {
+            background: #0a0a0a;
+        }
+
+        /* Vision Section */
+        .vision-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .vision-card {
+            background: linear-gradient(135deg, rgba(88, 86, 214, 0.05) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 50px;
+        }
+
+        .vision-card h3 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .vision-card p {
+            font-size: 19px;
+            color: #a8a8ad;
+            line-height: 1.6;
+        }
+
+        /* Team Values */
+        .values-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 40px;
+        }
+
+        .values-list li {
+            font-size: 21px;
+            color: #a8a8ad;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .values-list li strong {
+            color: #f5f5f7;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 120px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);
+        }
+
+        .cta-section h2 {
+            font-size: 64px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #5856d6 0%, #9f7aea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cta-section p {
+            font-size: 24px;
+            color: #a8a8ad;
+            margin-bottom: 40px;
+        }
+
+        .cta-primary {
+            background: #0071e3;
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 980px;
+            text-decoration: none;
+            font-size: 19px;
+            font-weight: 400;
+            transition: background 0.3s;
+            display: inline-block;
+        }
+
+        .cta-primary:hover {
+            background: #0077ed;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: #000;
+        }
+
+        footer p {
+            font-size: 12px;
+            color: #6e6e73;
+        }
+
+        /* Responsive */
+        @media (max-width: 1068px) {
+            .vision-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 734px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            
+            .hero {
+                padding: 100px 24px 60px;
+            }
+            
+            .hero h1 {
+                font-size: 48px;
+            }
+            
+            .hero p {
+                font-size: 21px;
+            }
+            
+            .content-section {
+                padding: 60px 24px;
+            }
+            
+            .content-section h2 {
+                font-size: 40px;
+            }
+            
+            .content-section p {
+                font-size: 19px;
+            }
+            
+            .vision-card {
+                padding: 32px;
+            }
+            
+            .vision-card h3 {
+                font-size: 24px;
+            }
+            
+            .vision-card p {
+                font-size: 17px;
+            }
+            
+            .cta-section {
+                padding: 80px 24px;
+            }
+            
+            .cta-section h2 {
+                font-size: 40px;
+            }
+            
+            .cta-section p {
+                font-size: 19px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .content-section h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="nav">
+        <div class="nav-content">
+            <div class="logo"><a href="index.html">VirtuFit</a></div>
+            <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" style="opacity: 1;">About</a></li>
+                <li><a href="technology.html">Technology</a></li>
+                <li><a href="retailers.html">For Retailers</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="technology.html">Technology</a></li>
+            <li><a href="retailers.html">For Retailers</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Reimagining retail.</h1>
+        <p>We're building the future of how people discover and buy fashion.</p>
+    </section>
+
+    <!-- The Problem -->
+    <section class="content-section">
+        <div class="content-wrapper">
+            <h2>The problem is massive.</h2>
+            <p>Online fashion has a crisis. 30-40% of clothes bought online get returned because customers can't visualize fit. That's billions in wasted logistics, environmental damage, and frustrated shoppers.</p>
+            <p>In stores, fitting rooms create bottlenecks. Customers give up after trying on a few items. Retailers lose sales. Everyone loses time.</p>
+            <p>The technology exists to fix this. But nobody has built it yet.</p>
+        </div>
+    </section>
+
+    <!-- Our Vision -->
+    <section class="content-section dark">
+        <div class="content-wrapper">
+            <h2>Our vision.</h2>
+            <p>We're building intelligent mirrors and virtual try-on systems that use computer vision, AI, and real-time 3D physics to let customers see exactly how clothes will look on their body.</p>
+            <p>No more guessing. No more returns. Just confidence.</p>
+        </div>
+        
+        <div class="vision-grid">
+            <div class="vision-card">
+                <h3>For Customers</h3>
+                <p>Try on dozens of outfits in minutes. Compare sizes instantly. See realistic physics simulation. Find your perfect fit without the hassle of changing clothes.</p>
+            </div>
+            
+            <div class="vision-card">
+                <h3>For Retailers</h3>
+                <p>Reduce return rates by 85%. Increase conversions 3x. Gain deep insights into customer preferences. Turn your inventory into an interactive, data-driven experience.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Approach -->
+    <section class="content-section">
+        <div class="content-wrapper">
+            <h2>How we're different.</h2>
+            <p>We're not building another photo filter or basic AR overlay. We're creating photorealistic, physics-based simulations that move and drape exactly like real fabric.</p>
+            <p>Our system captures precise body measurements, matches skin tone for seamless visualization, and renders in real-time at 60fps. The technology stack combines breakthroughs in computer vision, neural networks, and graphics rendering.</p>
+        </div>
+    </section>
+
+    <!-- Values -->
+    <section class="content-section dark">
+        <div class="content-wrapper">
+            <h2>What drives us.</h2>
+            <ul class="values-list">
+                <li>
+                    <strong>Customer-First Design</strong>
+                    Every feature we build starts with the customer experience. Technology should feel magical, not complicated.
+                </li>
+                <li>
+                    <strong>Retailer Partnership</strong>
+                    We succeed when retailers succeed. Simple integration, powerful analytics, and real ROI are non-negotiable.
+                </li>
+                <li>
+                    <strong>Sustainability</strong>
+                    Reducing returns means less shipping, less waste, and a smaller environmental footprint. Good for business and the planet.
+                </li>
+                <li>
+                    <strong>Innovation at the Edge</strong>
+                    We're pushing what's possible with AI and real-time graphics. We invest in R&D that creates lasting competitive advantages.
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Want to join us?</h2>
+        <p>We're looking for partners, investors, and early adopters.</p>
+        <a href="contact.html" class="cta-primary">Get in touch</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 VirtuFit. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            const isClickOnHamburger = hamburger.contains(event.target);
+            
+            if (!isClickInsideMenu && !isClickOnHamburger && mobileMenu.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
